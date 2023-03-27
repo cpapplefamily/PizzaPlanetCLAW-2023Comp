@@ -103,6 +103,7 @@ public class Arm_MM extends SubsystemBase {
 	public void periodic() {
 		double vel;
 		double pos;
+		//double targetPos
 		vel = _talon.getSelectedSensorVelocity();
 		pos = _talon.getSelectedSensorPosition();
 		if (DisableRetractMotion()) {
@@ -112,6 +113,7 @@ public class Arm_MM extends SubsystemBase {
 		SmartDashboard.putNumber("Arm Encoder", pos);
 		SmartDashboard.putBoolean("Rectraction Allowed", retractAllowed());
 		SmartDashboard.putNumber("Arm Velocity", vel);
+		//SmartDashboard.putNumber("Arm Setposition", targetPos);
 		//double motorOutput = _talon.getMotorOutputPercent();
 
 		/* Prepare line to print */
@@ -134,6 +136,7 @@ public class Arm_MM extends SubsystemBase {
 		
 		/* 2048 ticks/rev * 10 Rotations in either direction */
 		double targetPos = inches_To_Raw_Sensor_Counts(inches);// / 360 * MOTOR_COUNTS_PER_REV * GEAR_RATIO;
+		SmartDashboard.putNumber("Arm Setposition", targetPos);
 		_talon.set(TalonFXControlMode.MotionMagic, targetPos);
 	}
 
