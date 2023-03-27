@@ -178,6 +178,21 @@ public class Arm_MM extends SubsystemBase {
 
 	}
 
+	public double my_getCurrentExtensionLength()  {  //inches
+		final double m_sensorPos = _talon.getSelectedSensorPosition(0);
+		final double m_extension = raw_Sensor_Counts_To_Inches(m_sensorPos);
+		SmartDashboard.putNumber("Arm Sensor [counts]", m_sensorPos);
+		SmartDashboard.putNumber("Arm Extension [in]", m_extension);
+		return m_extension;
+	}
+
+
+	public  double get_My_CurrentRAW_Position() {
+		return _talon.getSelectedSensorPosition(0);
+	}
+
+
+
 	private double inches_To_Raw_Sensor_Counts(double inches){
 		return inches * 12635.203 - 3861;
 		//return inches / 360 * MOTOR_COUNTS_PER_REV * GEAR_RATIO;

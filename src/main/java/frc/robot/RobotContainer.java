@@ -5,7 +5,8 @@
 package frc.robot;
 
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.Arm_Percent;
+import frc.robot.commands.Arm_Jog_MagicMotion;
+//import frc.robot.commands.Arm_Percent;
 import frc.robot.commands.Arm_To_Setpoint;
 //import frc.robot.commands.Autos;
 import frc.robot.commands.ChargingStationAutoBalance;
@@ -13,6 +14,7 @@ import frc.robot.commands.AcquireGamePiece;
 import frc.robot.commands.DriveForwardDistance;
 import frc.robot.commands.DriveToTrackedTarget;
 import frc.robot.commands.NestArm;
+import frc.robot.commands.Pivot_Jog_MagicMotion;
 import frc.robot.commands.Pivot_Percent;
 //import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Pivot_To_Setpoint;
@@ -105,15 +107,13 @@ public class RobotContainer {
     extremeController.button(1).onTrue(new InstantCommand(() -> grabber.toggle()));
     //MANUAL RETRACT3/EXTEND4
   
-    extremeController.button(3).whileTrue(new Arm_Percent(-Constants.MANUAL_ARM_POWER, m_arm_MM));
-    extremeController.button(3).onFalse(new Arm_Percent(0.0, m_arm_MM));
-    extremeController.button(4).whileTrue(new Arm_Percent(Constants.MANUAL_ARM_POWER, m_arm_MM));
-    extremeController.button(4).onFalse(new Arm_Percent(0.0, m_arm_MM));
+
+    extremeController.button(3).whileTrue(new Arm_Jog_MagicMotion(m_arm_MM, -Constants.MANUAL_ARM_POWER));
+    extremeController.button(4).whileTrue(new Arm_Jog_MagicMotion(m_arm_MM, Constants.MANUAL_ARM_POWER));
+    extremeController.button(5).whileTrue(new Pivot_Jog_MagicMotion(m_pivot_MM, -Constants.MANUAL_PIVOT_POWER));
+    extremeController.button(6).whileTrue(new Pivot_Jog_MagicMotion(m_pivot_MM, Constants.MANUAL_PIVOT_POWER));
     
-    extremeController.button(5).whileTrue(new Pivot_Percent(-Constants.MANUAL_PIVOT_POWER, m_pivot_MM));
-    extremeController.button(5).onFalse(new Pivot_Percent(0.0, m_pivot_MM));
-    extremeController.button(6).whileTrue(new Pivot_Percent(Constants.MANUAL_PIVOT_POWER, m_pivot_MM));
-    extremeController.button(6).onFalse(new Pivot_Percent(0.0, m_pivot_MM));  
+
 
     extremeController.button(7).onTrue(new AcquireGamePiece(68.25, 10.0, m_pivot_MM, m_arm_MM, grabber));
     //HUMAN PLAYER
