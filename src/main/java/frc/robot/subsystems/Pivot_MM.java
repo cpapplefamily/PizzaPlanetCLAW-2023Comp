@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+// import edu.wpi.first.wpilibj.AnalogInput;
+// import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,12 +21,18 @@ public class Pivot_MM extends SubsystemBase {
 	
 	private double GEAR_RATIO = 80;
 	private double MOTOR_COUNTS_PER_REV = 2048;
-	private double ForwardSoftLimitThreshold = deg_To_Raw_Sensor_Counts(75);
-	private double ReverseSoftLimitThreshold = deg_To_Raw_Sensor_Counts(0);
-
 	final double maxSetpoint_deg = 75.0;
 	final double minSetpoint_deg = 0.0;
+	private double ForwardSoftLimitThreshold = deg_To_Raw_Sensor_Counts(maxSetpoint_deg);
+	private double ReverseSoftLimitThreshold = deg_To_Raw_Sensor_Counts(minSetpoint_deg);
 
+
+
+	// private AnalogInput anglePotentiometer;
+	// private AnglePotentiometer angleSensor;
+	// private double currentPotAngle;
+	
+	
 
 	// private double maxSetpoint_raw = deg_To_Raw_Sensor_Counts(maxSetpoint_deg);
 	// private double minSetpoint_raw = deg_To_Raw_Sensor_Counts(minSetpoint_deg);
@@ -33,12 +41,19 @@ public class Pivot_MM extends SubsystemBase {
 													// CANivore
 
 
+
+
 	/* Used to build string throughout loop */
 	//StringBuilder _sb = new StringBuilder();
 
 	/** Creates a new Pivot_MM. */
 	public Pivot_MM() {
 		/* Factory default hardware to prevent unexpected behavior */
+		// anglePotentiometer = new AnalogInput(Constants.POT_PORT);
+		// anglePotentiometer.setAverageBits(4);
+		// angleSensor = new AnalogPotentiometer(anglePotentiometer, 300, 20);
+		// currentPotAngle = angleSensor.get();
+		
 		_talon.configFactoryDefault();
 
 		/* Configure Sensor Source for Pirmary PID */
@@ -99,6 +114,9 @@ public class Pivot_MM extends SubsystemBase {
 		_talon.configReverseSoftLimitThreshold(ReverseSoftLimitThreshold, Constants.kTimeoutMs);
 		_talon.configReverseSoftLimitEnable(true, 0);
 		// _talon.configClearPositionOnLimitR(true, 0);
+
+
+		
 	}
 
 	@Override
@@ -107,6 +125,8 @@ public class Pivot_MM extends SubsystemBase {
 		// SmartDashboard.putNumber("pivot encoder", _talon.getSelectedSensorPosition());
 		SmartDashboard.putNumber("Pivot Sensor [counts]",  _talon.getSelectedSensorPosition());
 		SmartDashboard.putNumber("Pivot Angle [deg]", my_getDeg());
+		// currentPotAngle = angleSensor.get();
+		// SmartDashboard.putNumber("Pot Angle", currentPotAngle);
 		// double motorOutput = _talon.getMotorOutputPercent();
 
 		/* Prepare line to print */
@@ -153,6 +173,7 @@ public class Pivot_MM extends SubsystemBase {
 		  } else if (m_targetPos < minSetpoint_deg)  {
 			m_targetPos = minSetpoint_deg;
 		  }
+
 		/* 2048 ticks/rev * 10 Rotations in either direction */
 		double targetPos = deg_To_Raw_Sensor_Counts(m_targetPos);// / 360 * MOTOR_COUNTS_PER_REV * GEAR_RATIO;
 		_talon.set(TalonFXControlMode.MotionMagic, targetPos);
