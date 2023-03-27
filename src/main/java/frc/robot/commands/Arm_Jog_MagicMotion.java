@@ -26,7 +26,7 @@ public class Arm_Jog_MagicMotion extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double maxStep = 8594;  //[counts] ~1 inch acc to spreadsheet]
+    double maxStep = 21000;//~2 inches //8594;  //[counts] ~1 inch acc to spreadsheet]
     m_setpoint = (m_Arm.get_My_CurrentRAW_Position() + (power * maxStep));  //add tp subsystm
     m_Arm.my_motionMagic_Run(m_setpoint);
   }

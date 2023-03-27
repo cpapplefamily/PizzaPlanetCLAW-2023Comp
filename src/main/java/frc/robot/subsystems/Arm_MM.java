@@ -96,7 +96,7 @@ public class Arm_MM extends SubsystemBase {
 		// _talon.configClearPositionOnLimitR(true, 0);
 
 		// Assign optical sensor to digital channel 0 
-		_retractSensor = new DigitalInput(0);
+		_retractSensor = new DigitalInput(Constants.OPTICAL_PORT);
 	}
 
 	@Override

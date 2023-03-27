@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 // import edu.wpi.first.wpilibj.AnalogInput;
 // import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,9 +30,9 @@ public class Pivot_MM extends SubsystemBase {
 
 
 
-	// private AnalogInput anglePotentiometer;
-	// private AnglePotentiometer angleSensor;
-	// private double currentPotAngle;
+	private AnalogInput anglePotentiometer;
+	private AnalogPotentiometer angleSensor;
+	private double currentPotAngle;
 	
 	
 
@@ -49,10 +51,10 @@ public class Pivot_MM extends SubsystemBase {
 	/** Creates a new Pivot_MM. */
 	public Pivot_MM() {
 		/* Factory default hardware to prevent unexpected behavior */
-		// anglePotentiometer = new AnalogInput(Constants.POT_PORT);
-		// anglePotentiometer.setAverageBits(4);
-		// angleSensor = new AnalogPotentiometer(anglePotentiometer, 300, 20);
-		// currentPotAngle = angleSensor.get();
+		anglePotentiometer = new AnalogInput(Constants.POT_PORT);
+		anglePotentiometer.setAverageBits(4);
+		angleSensor = new AnalogPotentiometer(anglePotentiometer, 300, 20);
+		currentPotAngle = angleSensor.get();
 		
 		_talon.configFactoryDefault();
 
@@ -125,8 +127,8 @@ public class Pivot_MM extends SubsystemBase {
 		// SmartDashboard.putNumber("pivot encoder", _talon.getSelectedSensorPosition());
 		SmartDashboard.putNumber("Pivot Sensor [counts]",  _talon.getSelectedSensorPosition());
 		SmartDashboard.putNumber("Pivot Angle [deg]", my_getDeg());
-		// currentPotAngle = angleSensor.get();
-		// SmartDashboard.putNumber("Pot Angle", currentPotAngle);
+		currentPotAngle = angleSensor.get();
+		SmartDashboard.putNumber("Pot Angle", currentPotAngle);
 		// double motorOutput = _talon.getMotorOutputPercent();
 
 		/* Prepare line to print */
