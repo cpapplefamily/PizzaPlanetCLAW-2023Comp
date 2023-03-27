@@ -153,9 +153,6 @@ public class Pivot_MM extends SubsystemBase {
 		  } else if (m_targetPos < minSetpoint_deg)  {
 			m_targetPos = minSetpoint_deg;
 		  }
-
-
-		
 		/* 2048 ticks/rev * 10 Rotations in either direction */
 		double targetPos = deg_To_Raw_Sensor_Counts(m_targetPos);// / 360 * MOTOR_COUNTS_PER_REV * GEAR_RATIO;
 		_talon.set(TalonFXControlMode.MotionMagic, targetPos);
