@@ -26,7 +26,7 @@ public class Pivot_Jog_MagicMotion extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double maxStep = 1;  //degrees
+    double maxStep = 10;  //degrees
     m_setpoint = (m_Pivot.my_getCurrentPivotAngle() + (power * maxStep));  
     m_Pivot.my_motionMagic_Run(m_setpoint);
   }

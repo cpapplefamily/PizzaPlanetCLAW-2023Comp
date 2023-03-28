@@ -70,7 +70,7 @@ public final class Constants {
 
   //MANUAL CONTROL POWER VALUES
   public static final double MANUAL_ARM_POWER = 0.6;
-  public static final double MANUAL_PIVOT_POWER = 0.1;
+  public static final double MANUAL_PIVOT_POWER = 0.3;
   public static final int POT_PORT = 0;
   public static final int OPTICAL_PORT = 0;
 

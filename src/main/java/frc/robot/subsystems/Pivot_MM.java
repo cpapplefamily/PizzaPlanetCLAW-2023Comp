@@ -23,7 +23,7 @@ public class Pivot_MM extends SubsystemBase {
 	
 	private double GEAR_RATIO = 80;
 	private double MOTOR_COUNTS_PER_REV = 2048;
-	final double maxSetpoint_deg = 75.0;
+	final double maxSetpoint_deg = 78.0;
 	final double minSetpoint_deg = 0.0;
 	private double ForwardSoftLimitThreshold = deg_To_Raw_Sensor_Counts(maxSetpoint_deg);
 	private double ReverseSoftLimitThreshold = deg_To_Raw_Sensor_Counts(minSetpoint_deg);
@@ -167,17 +167,18 @@ public class Pivot_MM extends SubsystemBase {
 	
 	 public void my_motionMagic_Run(double deg) {
 		/* Motion Magic */
-		deg = clampSetpointValue_Deg(deg);
+		// deg = clampSetpointValue_Deg(deg);
 		m_targetPos = deg;
-
-		if (m_targetPos > maxSetpoint_deg) {
-			m_targetPos = maxSetpoint_deg;
-		  } else if (m_targetPos < minSetpoint_deg)  {
-			m_targetPos = minSetpoint_deg;
-		  }
+		// SmartDashboard.putNumber("Pivot SetPosition", m_targetPos);
+		// if (m_targetPos > maxSetpoint_deg) {
+		// 	m_targetPos = maxSetpoint_deg;
+		//   } else if (m_targetPos < minSetpoint_deg)  {
+		// 	m_targetPos = minSetpoint_deg;
+		//   }
 
 		/* 2048 ticks/rev * 10 Rotations in either direction */
 		double targetPos = deg_To_Raw_Sensor_Counts(m_targetPos);// / 360 * MOTOR_COUNTS_PER_REV * GEAR_RATIO;
+		
 		_talon.set(TalonFXControlMode.MotionMagic, targetPos);
 
 	}
