@@ -108,7 +108,6 @@ public void configMotors(){
 
 public void arcadeDrive(double throttle, double rotation) {
 
-  
 		// update count of iterations since rotation last commanded
 		if ((-0.01 < rotation) && (rotation < 0.01)) {
 			// rotation is practically zero, so just set it to zero and
