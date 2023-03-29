@@ -29,6 +29,10 @@ public class Drivetrain extends SubsystemBase {
     private double snail = 1.0;
     private boolean isSlow;
     private int drivetrian_flip = 1;
+    private int m_iterationsSinceRotationCommanded = 0;
+    private int m_preserveHeading_Iterations = 20;//5 Original Driver Didn't like the snappy action
+    private double m_desiredHeading = 0.0;
+    private double kP_preserveHeading_Telepo = 0.005; // 0.025; Original Driver Didn't like the snappy action
 
     public Drivetrain() {
       configMotors();
@@ -103,6 +107,28 @@ public void configMotors(){
 }
 
 public void arcadeDrive(double throttle, double rotation) {
+
+  
+		// update count of iterations since rotation last commanded
+		if ((-0.01 < rotation) && (rotation < 0.01)) {
+			// rotation is practically zero, so just set it to zero and
+			// increment iterations
+			rotation = 0.0;
+			m_iterationsSinceRotationCommanded++;
+		} else {
+			// rotation is being commanded, so clear iteration counter
+			m_iterationsSinceRotationCommanded = 0;
+		}
+
+		// preserve heading when recently stopped commanding rotations
+		if (m_iterationsSinceRotationCommanded == m_preserveHeading_Iterations) {
+			m_desiredHeading = getYaw(); // Check this to be sure its rotations
+		} else if (m_iterationsSinceRotationCommanded > m_preserveHeading_Iterations) {
+				rotation = (m_desiredHeading - getYaw()) * kP_preserveHeading_Telepo; 
+				//SmartDashboard.putNumber("MaintainHeaading ROtation", rotation);
+
+		}
+    
     drivetrain.arcadeDrive(snail * drivetrian_flip * -throttle, snail * rotation);
 
 }
