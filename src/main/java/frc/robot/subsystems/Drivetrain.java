@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -29,6 +30,14 @@ public class Drivetrain extends SubsystemBase {
     private double snail = 1.0;
     private boolean isSlow;
     private int drivetrian_flip = 1;
+
+
+    // //*************************************************************************************** */
+    private int m_iterationsSinceRotationCommanded = 0;
+    private double m_desiredHeading = 0.0;
+    private double kP_preservedHeading_Teleop = 0.005;  //try small increments up to 0.1
+    private int m_preserveHeading_Iterations = 5;  //Adjust up to 50 in increments of 5 or so
+    // //*************************************************************************************** */
 
     public Drivetrain() {
       configMotors();
@@ -102,9 +111,35 @@ public void configMotors(){
 
 }
 
-public void arcadeDrive(double throttle, double rotation) {
-    drivetrain.arcadeDrive(snail * drivetrian_flip * -throttle, snail * rotation);
 
+public void arcadeDrive(double throttle, double rotation) {
+    //********************************************************** */
+    if ((-0.01 < rotation)  && (rotation < 0.01))  {
+      //rotation is practically 0, so just set it to zero and increment iterations
+      rotation = 0.0;
+      m_iterationsSinceRotationCommanded++;
+    } else  {
+      //rotation is being commanded, so clear iteration counter
+      m_iterationsSinceRotationCommanded = 0;
+    }
+    //preserve heading when recently stopped commanding rotations
+    if (m_iterationsSinceRotationCommanded == m_preserveHeading_Iterations)  {
+      m_desiredHeading = getYaw();
+    } else if (m_iterationsSinceRotationCommanded > m_preserveHeading_Iterations)  {
+      rotation = (m_desiredHeading - getYaw()) * kP_preservedHeading_Teleop;  /****MiGHT BE REVERSED */
+    }
+    //********************************************************************** */
+    drivetrain.arcadeDrive(snail * drivetrian_flip * -throttle, snail * rotation);
+  }
+
+  //**************************************************************************8 */
+
+
+
+
+
+public void clearDesireHeading(){
+  m_desiredHeading = getYaw();
 }
 
 public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -206,6 +241,11 @@ public void stopTurnMotionMagic() {
 
 @Override
 public void periodic() {
+  SmartDashboard.putNumber("leftback count: ", leftBack.getSelectedSensorPosition());
+  SmartDashboard.putNumber("leftfront count: ", leftFront.getSelectedSensorPosition());
+  SmartDashboard.putNumber("rightback count: ", rightBack.getSelectedSensorPosition());
+  SmartDashboard.putNumber("rightfront count: ", rightFront.getSelectedSensorPosition());
+
 
 }
 
