@@ -12,6 +12,7 @@ public class Pivot_Jog_MagicMotion extends CommandBase {
   private double m_setpoint;
   private double power;
   /** Creates a new Pivot_Jog_MagicMotion. */
+  
   public Pivot_Jog_MagicMotion(Pivot_MM subsystem, double power) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.power = power;
