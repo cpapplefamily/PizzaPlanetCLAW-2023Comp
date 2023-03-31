@@ -114,9 +114,9 @@ public class RobotContainer {
     
 
 
-    extremeController.button(7).onTrue(new AcquireGamePiece(68.25, 10.0, m_pivot_MM, m_arm_MM, grabber));
+    extremeController.button(7).onTrue(new AcquireGamePiece(65, 10.0, m_pivot_MM, m_arm_MM, grabber));
     //HUMAN PLAYER
-    extremeController.button(8).onTrue(new AcquireGamePiece(60.0, 19.0, m_pivot_MM, m_arm_MM, grabber));
+    extremeController.button(8).onTrue(new AcquireGamePiece(60.0, 17.0, m_pivot_MM, m_arm_MM, grabber));
     //MID LEVEL
     extremeController.button(9).onTrue(new AcquireGamePiece(75.0, 35.0, m_pivot_MM, m_arm_MM, grabber));
     //HIGH LEVEL
@@ -147,7 +147,7 @@ public class RobotContainer {
         // new WaitCommand(0.1),
         // new InstantCommand(() -> m_pivot_MM.my_resetEncoder()),
         // new WaitCommand(0.1),
-        new Pivot_To_Setpoint(78, m_pivot_MM).withTimeout(1.5),
+        new Pivot_To_Setpoint(75, m_pivot_MM).withTimeout(1.5),
         new WaitCommand(0.1),
         new Arm_To_Setpoint(35, m_arm_MM),
         new WaitCommand(0.0),
@@ -169,7 +169,7 @@ public class RobotContainer {
     autoCommandSelector.addOption(
       "Auto Left/Right",
       new SequentialCommandGroup(
-        new Pivot_To_Setpoint(78, m_pivot_MM).withTimeout(1.5),
+        new Pivot_To_Setpoint(75, m_pivot_MM).withTimeout(1.5),
         new WaitCommand(0.1),
         new Arm_To_Setpoint(35, m_arm_MM),
         new WaitCommand(0.0),

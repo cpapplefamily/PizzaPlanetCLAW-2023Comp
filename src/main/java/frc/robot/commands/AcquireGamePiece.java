@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+// import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Arm_MM;
@@ -26,8 +26,7 @@ public class AcquireGamePiece extends SequentialCommandGroup {
       new Pivot_To_Setpoint(pivotPosition, m_pivot_MM).withTimeout(2.0),
       new WaitCommand(0.5),
       new Arm_To_Setpoint(armPosition, m_arm_MM),
-      new WaitCommand(0.5),
-      new InstantCommand(() -> grabber.openGrabber())
+      new WaitCommand(0.5)
     );
   }
 }

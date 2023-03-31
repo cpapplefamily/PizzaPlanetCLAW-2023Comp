@@ -17,13 +17,14 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 public class Pivot_MM extends SubsystemBase {
 	
 	private double GEAR_RATIO = 80;
 	private double MOTOR_COUNTS_PER_REV = 2048;
-	final double maxSetpoint_deg = 78.0;
+	final double maxSetpoint_deg = 80.0;
 	final double minSetpoint_deg = 0.0;
 	private double ForwardSoftLimitThreshold = deg_To_Raw_Sensor_Counts(maxSetpoint_deg);
 	private double ReverseSoftLimitThreshold = deg_To_Raw_Sensor_Counts(minSetpoint_deg);
@@ -99,7 +100,7 @@ public class Pivot_MM extends SubsystemBase {
 		/* Set Motion Magic gains in slot0 - see documentation */
 		_talon.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		_talon.config_kF(Constants.kSlotIdx, 0.04, Constants.kTimeoutMs);
-		_talon.config_kP(Constants.kSlotIdx, 0.058, Constants.kTimeoutMs);
+		_talon.config_kP(Constants.kSlotIdx, 0.06, Constants.kTimeoutMs);
 		_talon.config_kI(Constants.kSlotIdx, 0.0, Constants.kTimeoutMs);
 		_talon.config_kD(Constants.kSlotIdx, 0.0, Constants.kTimeoutMs);
 
@@ -179,7 +180,8 @@ public class Pivot_MM extends SubsystemBase {
 		/* 2048 ticks/rev * 10 Rotations in either direction */
 		double targetPos = deg_To_Raw_Sensor_Counts(m_targetPos);// / 360 * MOTOR_COUNTS_PER_REV * GEAR_RATIO;
 		
-		_talon.set(TalonFXControlMode.MotionMagic, targetPos);
+		_talon.set(TalonFXControlMode.MotionMagic, targetPos, DemandType.ArbitraryFeedForward, getFeedForward(0.15));
+
 
 	}
 
@@ -193,6 +195,13 @@ public class Pivot_MM extends SubsystemBase {
 	 * 
 	 * @param speed
 	 */
+	private double getFeedForward(double horizontalHoldOutput){
+		double pivotCurrentAngle = my_getDeg();
+		double theta = Math.toRadians(56 - pivotCurrentAngle);
+		double gravityCompensation = Math.cos(theta);
+		double arbFeedFwd = gravityCompensation* horizontalHoldOutput;
+		return arbFeedFwd;
+	}
 	public void my_PercentOutput_Run(double speed) {
 		_talon.set(TalonFXControlMode.PercentOutput, speed);
 	}

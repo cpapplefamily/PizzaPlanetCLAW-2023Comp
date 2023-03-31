@@ -33,10 +33,10 @@ public class Drivetrain extends SubsystemBase {
 
 
     // //*************************************************************************************** */
-    private int m_iterationsSinceRotationCommanded = 0;
-    private double m_desiredHeading = 0.0;
-    private double kP_preservedHeading_Teleop = 0.005;  //try small increments up to 0.1
-    private int m_preserveHeading_Iterations = 5;  //Adjust up to 50 in increments of 5 or so
+    // private int m_iterationsSinceRotationCommanded = 0;
+    // private double m_desiredHeading = 0.0;
+    // private double kP_preservedHeading_Teleop = 0.025;  //try small increments up to 0.1
+    // private int m_preserveHeading_Iterations = 20;  //Adjust up to 50 in increments of 5 or so
     // //*************************************************************************************** */
 
     public Drivetrain() {
@@ -114,33 +114,28 @@ public void configMotors(){
 
 public void arcadeDrive(double throttle, double rotation) {
     //********************************************************** */
-    if ((-0.01 < rotation)  && (rotation < 0.01))  {
-      //rotation is practically 0, so just set it to zero and increment iterations
-      rotation = 0.0;
-      m_iterationsSinceRotationCommanded++;
-    } else  {
-      //rotation is being commanded, so clear iteration counter
-      m_iterationsSinceRotationCommanded = 0;
-    }
-    //preserve heading when recently stopped commanding rotations
-    if (m_iterationsSinceRotationCommanded == m_preserveHeading_Iterations)  {
-      m_desiredHeading = getYaw();
-    } else if (m_iterationsSinceRotationCommanded > m_preserveHeading_Iterations)  {
-      rotation = (m_desiredHeading - getYaw()) * kP_preservedHeading_Teleop;  /****MiGHT BE REVERSED */
-    }
+    // if ((-0.01 < rotation)  && (rotation < 0.01))  {
+    //   //rotation is practically 0, so just set it to zero and increment iterations
+    //   rotation = 0.0;
+    //   m_iterationsSinceRotationCommanded++;
+    // } else  {
+    //   //rotation is being commanded, so clear iteration counter
+    //   m_iterationsSinceRotationCommanded = 0;
+    // }
+    // //preserve heading when recently stopped commanding rotations
+    // if (m_iterationsSinceRotationCommanded == m_preserveHeading_Iterations)  {
+    //   m_desiredHeading = getYaw();
+    // } else if (m_iterationsSinceRotationCommanded > m_preserveHeading_Iterations)  {
+    //   rotation = (m_desiredHeading - getYaw()) * kP_preservedHeading_Teleop;  /****MiGHT BE REVERSED */
+    // }
     //********************************************************************** */
     drivetrain.arcadeDrive(snail * drivetrian_flip * -throttle, snail * rotation);
   }
 
   //**************************************************************************8 */
-
-
-
-
-
-public void clearDesireHeading(){
-  m_desiredHeading = getYaw();
-}
+// public void clearDesireHeading(){
+//   m_desiredHeading = getYaw();
+// }
 
 public void tankDrive(double leftSpeed, double rightSpeed) {
     drivetrain.tankDrive(snail * -leftSpeed, snail * -rightSpeed);
